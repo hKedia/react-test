@@ -1,20 +1,30 @@
 import React, { Component } from "react";
-import Modeler from "bpmn-js/lib/Modeler";
+import { Header, Segment } from "semantic-ui-react";
+
+import diagramXML from "../resources/newDiagram.bpmn";
+import BpmnJS from "bpmn-js/dist/bpmn-modeler.development.js";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
 
-// export a modeler page component
-// use the Modeler to instantiate a modeler instance
 export default class ModelerPage extends Component {
   componentDidMount() {
-    new Modeler({ container: "#canvas" });
+    let viewer = new BpmnJS({ container: "#js-canvas" });
+    viewer.importXML(diagramXML, err => {
+      if (err) {
+        console.error(err);
+      }
+    });
   }
   render() {
     return (
-      <>
-        <h1>Modeler</h1>
-        <div id="canvas" />
-      </>
+      <div>
+        <Segment>
+          <Header as="h1" textAlign="center">
+            Modeler
+          </Header>
+        </Segment>
+        <div className="canvas" id="js-canvas" />
+      </div>
     );
   }
 }
